@@ -1,4 +1,5 @@
 import React from "react";
+import MoreInfoButton from "./More-Info-Button";
 
 export default function PokemonSlot(props) {
   const pokemonGif = `https://play.pokemonshowdown.com/sprites/ani/${props.pokemon}.gif`;
@@ -13,9 +14,7 @@ export default function PokemonSlot(props) {
         </div>
 
         <div className="w-full flex justify-between">
-          <button className="text-xl bg-cyan-600 rounded-xl p-2">
-            More info
-          </button>
+          <MoreInfoButton />
           <p
             className="text-2xl"
             onClick={() => props.changeLock(props.id, props.locked)}
