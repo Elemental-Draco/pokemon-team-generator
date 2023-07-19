@@ -1,16 +1,14 @@
 import React from "react";
 
 export default function PokemonSlot(props) {
-  // props.pokemon instead of hardcoded pikachu
-
   const pokemonGif = `https://play.pokemonshowdown.com/sprites/ani/${props.pokemon}.gif`;
 
   return (
     <>
       <div className=" flex flex-col ml-10 mt-10 w-[150px]">
-        <p className="justify-self-end">{props.pokemon}</p>
+        <p className="text-xl font-bold">{props.pokemon}</p>
 
-        <div className="w-[150px] h-[150px] flex bg-red-700 items-center">
+        <div className="w-[150px] h-[150px] flex bg-red-700 items-center justify-center">
           <img src={pokemonGif} alt="this pokemon" className="" />
         </div>
 
