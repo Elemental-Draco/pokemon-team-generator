@@ -1,10 +1,8 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-import "./App.css";
+import React from "react";
+import PokemonSlot from "./components/pokemon-slot";
 
 function App() {
-  return <div>Hello world</div>;
+  return <PokemonSlot pokemon="shiftry" />;
 }
 
 export default App;
