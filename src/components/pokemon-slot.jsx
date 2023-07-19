@@ -16,7 +16,12 @@ export default function PokemonSlot(props) {
           <button className="text-xl bg-cyan-600 rounded-xl p-2">
             More info
           </button>
-          <p className="text-2xl">🔒</p>
+          <p
+            className="text-2xl"
+            onClick={() => props.changeLock(props.id, props.locked)}
+          >
+            {props.locked ? "🔒" : "🔓"}
+          </p>
         </div>
       </div>
     </>
