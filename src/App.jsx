@@ -1,16 +1,32 @@
 import React from "react";
 import PokemonSlot from "./components/pokemon-slot";
-import MoreInfoButton from "./components/More-Info-Button";
+import MoreInfoPopup from "./components/More-Info-Popup";
 
 function App() {
+  const [pokedex, setPokedex] = React.useState(
+    localStorage.getItem("pokedex")
+      ? JSON.parse(localStorage.getItem("pokedex"))
+      : fetchPokemon()
+  );
+
   const [randomPickedPokemons, setRandomPickedPokemons] = React.useState([
-    { name: "pichu", locked: true },
-    { name: "groudon", locked: false },
-    { name: "garchomp", locked: true },
-    { name: "weepinbell", locked: true },
-    { name: "toxapex", locked: true },
-    { name: "mew", locked: true },
+    { name: "ditto", locked: true, dexNum: 132 },
+    { name: "ditto", locked: false, dexNum: 132 },
+    { name: "ditto", locked: true, dexNum: 132 },
+    { name: "ditto", locked: true, dexNum: 132 },
+    { name: "ditto", locked: true, dexNum: 132 },
+    { name: "ditto", locked: true, dexNum: 132 },
   ]);
+
+  async function fetchPokemon() {
+    console.log("ran the fetch function");
+    const pokedex = await fetch("https://pokeapi.co/api/v2/pokedex/1/")
+      .then((response) => response.json())
+      .then((object) => object.pokemon_entries);
+    localStorage.setItem("pokedex", JSON.stringify(pokedex));
+
+    return pokedex;
+  }
 
   function changeLock(monId, isLocked) {
     setRandomPickedPokemons((prevMons) => {
@@ -22,9 +38,18 @@ function App() {
   }
 
   function randomize() {
+    // evolves from species === null means baby pokemon
+    // grab from localstorage/call to the api to find that data for a random num picked pokemon. default to fully evolved pokemon only.
     setRandomPickedPokemons((prevMons) => {
       return prevMons.map((mon) => {
-        return mon.locked ? mon : { ...mon, name: "pikachu" };
+        let randomNum = Math.floor(Math.random() * 1011);
+        return mon.locked
+          ? mon
+          : {
+              locked: false,
+              name: pokedex[randomNum].pokemon_species.name,
+              dexNum: randomNum + 1,
+            };
       });
     });
   }
@@ -37,6 +62,7 @@ function App() {
         <PokemonSlot
           id={slot - 1}
           key={slot}
+          dexNum={mon.dexNum}
           pokemon={mon.name}
           locked={mon.locked}
           changeLock={changeLock}
@@ -50,6 +76,7 @@ function App() {
 
   return (
     <>
+      {/* <MoreInfoPopup randomPickedPokemons={randomPickedPokemons} />) */}
       <div className="grid grid-cols-2 grid-rows-3 max-w-[80%] mx-auto">
         <>{showPokemons(randomPickedPokemons)}</>
       </div>

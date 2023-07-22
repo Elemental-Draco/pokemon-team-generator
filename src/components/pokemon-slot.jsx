@@ -1,8 +1,8 @@
+/* eslint-disable react/prop-types */
 import React from "react";
-import MoreInfoButton from "./More-Info-Button";
 
 export default function PokemonSlot(props) {
-  const pokemonGif = `https://play.pokemonshowdown.com/sprites/ani/${props.pokemon}.gif`;
+  let pokemonGif = `https://play.pokemonshowdown.com/sprites/ani/${props.pokemon}.gif`;
 
   return (
     <>
@@ -10,13 +10,23 @@ export default function PokemonSlot(props) {
         <p className="text-xl font-bold">{props.pokemon}</p>
 
         <div className="w-[150px] h-[150px] flex bg-red-700 items-center justify-center">
-          <img src={pokemonGif} alt="this pokemon" className="" />
+          <img
+            src={
+              props.dexNum < 899
+                ? pokemonGif
+                : ` https://play.pokemonshowdown.com/sprites/dex/${props.pokemon}.png`
+            }
+            alt="this pokemon"
+            className=""
+          />
         </div>
 
         <div className="w-full flex justify-between">
-          <MoreInfoButton />
+          <button className="text-xl bg-cyan-600 rounded-xl p-2">
+            More info
+          </button>
           <p
-            className="text-2xl"
+            className="text-2xl hover:cursor-pointer"
             onClick={() => props.changeLock(props.id, props.locked)}
           >
             {props.locked ? "🔒" : "🔓"}
