@@ -1,10 +1,7 @@
 /* eslint-disable react/prop-types */
 import React from "react";
-import MoreInfoPopup from "./More-Info-Popup";
 
 export default function PokemonSlot(props) {
-  const [showingPopup, setShowingPopup] = React.useState(false);
-
   function replaceDashes(pokemonName) {
     return pokemonName.replace("-", "");
   }
@@ -22,11 +19,8 @@ export default function PokemonSlot(props) {
   let capitalizedMon =
     props.pokemon.charAt(0).toUpperCase() + props.pokemon.slice(1);
 
-  function openPopUp() {}
-
   return (
     <>
-      {showingPopup && <MoreInfoPopup />}
       <div className=" flex flex-col ml-10 mt-10 w-[150px]">
         <p className="text-xl font-bold">{capitalizedMon}</p>
 
@@ -39,12 +33,17 @@ export default function PokemonSlot(props) {
         </div>
 
         <div className="w-full flex justify-between">
-          <button
+          <a
+            href={`https://www.serebii.net/pokemon/${replaceDashes(
+              props.pokemon
+            )}/`}
+            target="_blank"
+            rel="noreferrer"
             className="text-xl bg-cyan-600 rounded-xl p-2"
-            onClick={openPopUp}
+            id={props.id}
           >
             More info
-          </button>
+          </a>
           <p
             className="text-2xl hover:cursor-pointer"
             onClick={() => props.changeLock(props.id, props.locked)}

@@ -1,6 +1,6 @@
 import React from "react";
 import PokemonSlot from "./components/pokemon-slot";
-import MoreInfoPopup from "./components/More-Info-Popup";
+// import MoreInfoPopup from "./components/More-Info-Popup";
 
 function App() {
   const [pokedex, setPokedex] = React.useState(
@@ -19,6 +19,8 @@ function App() {
   ]);
 
   const [showingPopup, setShowingPopup] = React.useState(true);
+
+  const [popupInfo, setPopupInfo] = React.useState({});
 
   async function fetchPokemon() {
     console.log("ran the fetch function");
@@ -68,6 +70,8 @@ function App() {
           pokemon={mon.name}
           locked={mon.locked}
           changeLock={changeLock}
+          setShowingPopup={setShowingPopup}
+          setPopupInfo={setPopupInfo}
         />
       );
     });
@@ -78,9 +82,15 @@ function App() {
 
   return (
     <>
-      {showingPopup && <MoreInfoPopup setShowingPopup={setShowingPopup} />}
-      <div className="grid grid-cols-2 grid-rows-3 max-w-[80%] mx-auto">
-        <>{showPokemons(randomPickedPokemons)}</>
+      {/* {showingPopup && (
+        <MoreInfoPopup
+          popupInfo={popupInfo}
+          setShowingPopup={setShowingPopup}
+          pokemons={randomPickedPokemons}
+        />
+      )} */}
+      <div className="bg-blue-200 grid grid-cols-2 grid-rows-3 justify-items-center max-w-[40%] min-w-[500px] mx-auto mt-10">
+        {showPokemons(randomPickedPokemons)}
       </div>
       <button onClick={randomize} className="w-[100px] h-[50px]">
         Randomize!
