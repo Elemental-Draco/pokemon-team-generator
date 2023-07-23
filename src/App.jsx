@@ -10,13 +10,15 @@ function App() {
   );
 
   const [randomPickedPokemons, setRandomPickedPokemons] = React.useState([
-    { name: "ditto", locked: true, dexNum: 132 },
+    { name: "iron-thorns", locked: true, dexNum: 995 },
     { name: "ditto", locked: false, dexNum: 132 },
     { name: "ditto", locked: true, dexNum: 132 },
     { name: "ditto", locked: true, dexNum: 132 },
     { name: "ditto", locked: true, dexNum: 132 },
     { name: "ditto", locked: true, dexNum: 132 },
   ]);
+
+  const [showingPopup, setShowingPopup] = React.useState(true);
 
   async function fetchPokemon() {
     console.log("ran the fetch function");
@@ -76,7 +78,7 @@ function App() {
 
   return (
     <>
-      {/* <MoreInfoPopup randomPickedPokemons={randomPickedPokemons} />) */}
+      {showingPopup && <MoreInfoPopup setShowingPopup={setShowingPopup} />}
       <div className="grid grid-cols-2 grid-rows-3 max-w-[80%] mx-auto">
         <>{showPokemons(randomPickedPokemons)}</>
       </div>
