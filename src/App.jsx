@@ -1,36 +1,39 @@
 import React from "react";
 import PokemonSlot from "./components/pokemon-slot";
-// import MoreInfoPopup from "./components/More-Info-Popup";
+
+import Sidebar from "./components/Sidebar";
 
 function App() {
   const [pokedex, setPokedex] = React.useState(
-    localStorage.getItem("pokedex")
-      ? JSON.parse(localStorage.getItem("pokedex"))
-      : fetchPokemon()
+    JSON.parse(localStorage.getItem("pokedex"))
   );
 
+  const [selectedRegion, setSelectedRegion] = React.useState({ value: 1011 });
+
   const [randomPickedPokemons, setRandomPickedPokemons] = React.useState([
-    { name: "iron-thorns", locked: true, dexNum: 995 },
-    { name: "ditto", locked: false, dexNum: 132 },
-    { name: "ditto", locked: true, dexNum: 132 },
-    { name: "ditto", locked: true, dexNum: 132 },
-    { name: "ditto", locked: true, dexNum: 132 },
-    { name: "ditto", locked: true, dexNum: 132 },
+    { name: "bulbasuar", locked: false, dexNum: 1 },
+    { name: "bulbasuar", locked: false, dexNum: 1 },
+    { name: "bulbasuar", locked: false, dexNum: 1 },
+    { name: "bulbasuar", locked: false, dexNum: 1 },
+    { name: "bulbasuar", locked: false, dexNum: 1 },
+    { name: "bulbasuar", locked: false, dexNum: 1 },
   ]);
 
-  const [showingPopup, setShowingPopup] = React.useState(true);
-
-  const [popupInfo, setPopupInfo] = React.useState({});
-
-  async function fetchPokemon() {
-    console.log("ran the fetch function");
-    const pokedex = await fetch("https://pokeapi.co/api/v2/pokedex/1/")
-      .then((response) => response.json())
-      .then((object) => object.pokemon_entries);
-    localStorage.setItem("pokedex", JSON.stringify(pokedex));
-
-    return pokedex;
-  }
+  React.useEffect(() => {
+    if (pokedex) {
+      setPokedex(JSON.parse(localStorage.getItem("pokedex")));
+    } else {
+      console.log("ran the fetch function");
+      fetch("https://pokeapi.co/api/v2/pokedex/1/")
+        .then((response) => response.json())
+        .then((object) => object.pokemon_entries)
+        .then((pokemonArray) => {
+          localStorage.setItem("pokedex", JSON.stringify(pokemonArray));
+          setPokedex(JSON.parse(localStorage.getItem("pokedex")));
+        });
+    }
+    randomize();
+  }, []);
 
   function changeLock(monId, isLocked) {
     setRandomPickedPokemons((prevMons) => {
@@ -42,11 +45,9 @@ function App() {
   }
 
   function randomize() {
-    // evolves from species === null means baby pokemon
-    // grab from localstorage/call to the api to find that data for a random num picked pokemon. default to fully evolved pokemon only.
     setRandomPickedPokemons((prevMons) => {
       return prevMons.map((mon) => {
-        let randomNum = Math.floor(Math.random() * 1011);
+        let randomNum = Math.floor(Math.random() * selectedRegion.value);
         return mon.locked
           ? mon
           : {
@@ -70,8 +71,6 @@ function App() {
           pokemon={mon.name}
           locked={mon.locked}
           changeLock={changeLock}
-          setShowingPopup={setShowingPopup}
-          setPopupInfo={setPopupInfo}
         />
       );
     });
@@ -81,21 +80,12 @@ function App() {
   // use local storage to store every time the randomiser gets ran again, so when user reloads that team appears again
 
   return (
-    <>
-      {/* {showingPopup && (
-        <MoreInfoPopup
-          popupInfo={popupInfo}
-          setShowingPopup={setShowingPopup}
-          pokemons={randomPickedPokemons}
-        />
-      )} */}
-      <div className="bg-blue-200 grid grid-cols-2 grid-rows-3 justify-items-center max-w-[40%] min-w-[500px] mx-auto mt-10">
+    <div className="flex">
+      <Sidebar randomize={randomize} setSelectedRegion={setSelectedRegion} />
+      <div className="bg-blue-200 grid grid-cols-2 grid-rows-3 justify-items-center max-w-[40%] min-w-[500px] mx-auto p-20 h-full ">
         {showPokemons(randomPickedPokemons)}
       </div>
-      <button onClick={randomize} className="w-[100px] h-[50px]">
-        Randomize!
-      </button>
-    </>
+    </div>
   );
 }
 
