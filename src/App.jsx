@@ -11,12 +11,12 @@ function App() {
   const [selectedRegion, setSelectedRegion] = React.useState({ value: 1011 });
 
   const [randomPickedPokemons, setRandomPickedPokemons] = React.useState([
-    { name: "bulbasuar", locked: false, dexNum: 1 },
-    { name: "bulbasuar", locked: false, dexNum: 1 },
-    { name: "bulbasuar", locked: false, dexNum: 1 },
-    { name: "bulbasuar", locked: false, dexNum: 1 },
-    { name: "bulbasuar", locked: false, dexNum: 1 },
-    { name: "bulbasuar", locked: false, dexNum: 1 },
+    { name: "bulbasaur", locked: false, dexNum: 1 },
+    { name: "bulbasaur", locked: false, dexNum: 1 },
+    { name: "bulbasaur", locked: false, dexNum: 1 },
+    { name: "bulbasaur", locked: false, dexNum: 1 },
+    { name: "bulbasaur", locked: false, dexNum: 1 },
+    { name: "bulbasaur", locked: false, dexNum: 1 },
   ]);
 
   React.useEffect(() => {
@@ -29,7 +29,7 @@ function App() {
         .then((object) => object.pokemon_entries)
         .then((pokemonArray) => {
           localStorage.setItem("pokedex", JSON.stringify(pokemonArray));
-          setPokedex(JSON.parse(localStorage.getItem("pokedex")));
+          setPokedex(pokemonArray);
         });
     }
     randomize();
@@ -45,6 +45,9 @@ function App() {
   }
 
   function randomize() {
+    if (!pokedex) {
+      return;
+    }
     setRandomPickedPokemons((prevMons) => {
       return prevMons.map((mon) => {
         let randomNum = Math.floor(Math.random() * selectedRegion.value);
